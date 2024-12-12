@@ -1,61 +1,135 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>gSpeed</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body {
-            background-color: #0b0f0b;
-            background-image: url('https://placehold.co/1920x1080/0b0f0b/0b0f0b?text=Background+with+gray+circles');
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-        }
-        .slider-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            height: 100vh;
-        }
-        .slider {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 100%;
-            height: 25px;
-            background: #4caf50;
-            outline: none;
-            opacity: 0.7;
-            transition: opacity .2s;
-        }
-        .slider:hover {
-            opacity: 1;
-        }
-        .slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 25px;
-            height: 25px;
-            background: #4caf50;
-            cursor: pointer;
-        }
-        .slider::-moz-range-thumb {
-            width: 25px;
-            height: 25px;
-            background: #4caf50;
-            cursor: pointer;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>gSpeed</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: #001500;
+      overflow: hidden;
+    }
+
+    .background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .dot {
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      animation: float 10s infinite ease-in-out;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0) translateX(0);
+      }
+      50% {
+        transform: translateY(100px) translateX(50px);
+      }
+      100% {
+        transform: translateY(-100px) translateX(-50px);
+      }
+    }
+
+    h1 {
+      font-size: 5rem;
+      color: #00ff00;
+      font-family: Arial, sans-serif;
+      text-shadow: 0 0 15px #00ff00;
+      margin: 0 0 20px;
+    }
+
+    .progress-container {
+      width: 80%;
+      height: 50px;
+      background-color: #003300;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #00ff00;
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 50%;
+      background: linear-gradient(to right, #00cc00, #00ff00);
+      border-radius: 10px 0 0 10px;
+    }
+
+    .progress-number {
+      position: absolute;
+      color: #fff;
+      font-size: 1.5rem;
+      font-family: Arial, sans-serif;
+    }
+
+    .progress-number.left {
+      left: -30px;
+    }
+
+    .progress-number.right {
+      right: -30px;
+    }
+
+    .slider-container {
+      margin-top: 20px;
+    }
+
+    input[type="range"] {
+      width: 300px;
+    }
+  </style>
 </head>
-<body class="flex items-center justify-center">
-    <div class="slider-container text-center">
-        <h1 class="text-6xl font-bold text-green-500 mb-8">gSpeed</h1>
-        <div class="w-3/4 md:w-1/2 lg:w-1/3 flex items-center">
-            <span class="text-white text-2xl mr-4">1</span>
-            <input type="range" min="1" max="100" value="50" class="slider">
-            <span class="text-white text-2xl ml-4">100</span>
-        </div>
-    </div>
+<body>
+  <div class="background" id="background"></div>
+  <h1>gSpeed</h1>
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="progress-number left">1</div>
+    <div class="progress-number right">100</div>
+  </div>
+  <div class="slider-container">
+    <input type="range" id="progressSlider" min="1" max="100" value="50">
+  </div>
+
+  <script>
+    // Create random floating dots for background
+    const background = document.getElementById('background');
+    for (let i = 0; i < 100; i++) {
+      const dot = document.createElement('div');
+      dot.classList.add('dot');
+      dot.style.top = `${Math.random() * 100}vh`;
+      dot.style.left = `${Math.random() * 100}vw`;
+      dot.style.animationDuration = `${Math.random() * 5 + 5}s`;
+      dot.style.animationDelay = `${Math.random() * 10}s`;
+      background.appendChild(dot);
+    }
+
+    // Slider to control progress bar
+    const progressBar = document.getElementById('progressBar');
+    const slider = document.getElementById('progressSlider');
+
+    slider.addEventListener('input', () => {
+      const progress = slider.value;
+      progressBar.style.width = `${progress}%`;
+    });
+  </script>
 </body>
 </html>
